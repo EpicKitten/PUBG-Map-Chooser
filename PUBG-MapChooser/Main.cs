@@ -55,25 +55,6 @@ namespace PUBG_MapChooser
                         MessageBox.Show("Steam Corrupt!", "Error!");
                         Application.Exit();
                     }
-                    pubgmaplist = Directory.GetFiles(pubgmaploc);
-                    foreach (string file in pubgmaplist)
-                    {
-                        Console.WriteLine(file);
-                        if(file.Contains("TslGame-WindowsNoEditor_desert"))
-                        {
-                            if (file.Contains(".pak.disabled"))
-                            {
-                                miramarMapCheck.Checked = false;
-                            }
-                        }
-                        if (file.Contains("TslGame-WindowsNoEditor_erangel"))
-                        {
-                            if (file.Contains(".pak.disabled"))
-                            {
-                                erangelMapCheck.Checked = false;
-                            }
-                        }
-                    }
                 }
                 else
                 {
@@ -81,6 +62,13 @@ namespace PUBG_MapChooser
                 }
             }
             
+        }
+        private void CheckChange()
+        {
+            if (!(erangelMapCheck.Checked && miramarMapCheck.Checked))
+            {
+                MessageBox.Show("By disabling both maps, PUBG will refuse to join any servers and won't watch any replays", "Caution!", MessageBoxButtons.OK);
+            }
         }
         private void setMaps_Click(object sender, EventArgs e)
         {
@@ -146,6 +134,5 @@ namespace PUBG_MapChooser
                 }
             }
         }
-
     }
 }
