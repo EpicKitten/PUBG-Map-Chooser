@@ -20,6 +20,9 @@ namespace PUBG_MapChooser
         public string[] pubgmaplist = { };
         private void Main_Load(object sender, EventArgs e)
         {
+            Properties.Settings.Default.steam_location = "";
+            Properties.Settings.Default.pubg_map_location = "";
+            Properties.Settings.Default.Save();
             if (Properties.Settings.Default.steam_location == string.Empty)
             {
                 using (var fbd = new FolderBrowserDialog())
@@ -75,7 +78,7 @@ namespace PUBG_MapChooser
         {
             if (!(erangelMapCheck.Checked && miramarMapCheck.Checked))
             {
-                MessageBox.Show("By disabling both maps, PUBG will refuse to join any servers and won't watch any replays", "Caution!", MessageBoxButtons.OK);
+                MessageBox.Show("By disabling both maps, PUBG will refuse to join any servers and won't watch any replays", "Caution!", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
             }
         }
         private void setMaps_Click(object sender, EventArgs e)
@@ -141,6 +144,15 @@ namespace PUBG_MapChooser
                     }
                 }
             }
+        }
+
+        private void resetSettings_Click(object sender, EventArgs e)
+        {
+            Properties.Settings.Default.steam_location = "";
+            Properties.Settings.Default.pubg_map_location = "";
+            Properties.Settings.Default.Save();
+            MessageBox.Show("Settings Cleared!", "Closing app!", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+            Application.Exit();
         }
     }
 }
