@@ -20,48 +20,56 @@ namespace PUBG_MapChooser
         public string[] pubgmaplist = { };
         private void Main_Load(object sender, EventArgs e)
         {
-            using (var fbd = new FolderBrowserDialog())
+            if (Properties.Settings.Default.steam_location == string.Empty)
             {
-                fbd.Description = @"Select your Steamapps Install folder where PUBG is installed (usually it's C:\Program Files\Steam\steamapps)";
-                DialogResult result = fbd.ShowDialog();
-
-                if (result == DialogResult.OK)
+                using (var fbd = new FolderBrowserDialog())
                 {
-                    steamloc = fbd.SelectedPath;
-                    Console.WriteLine(steamloc);
-                    if (steamloc == string.Empty)
+                    fbd.Description = @"Select your Steamapps Install folder where PUBG is installed (usually it's C:\Program Files\Steam\steamapps)";
+                    DialogResult result = fbd.ShowDialog();
+
+                    if (result == DialogResult.OK)
                     {
-                        MessageBox.Show("Steam wasen't selected!", "Error!");
-                        Application.Exit();
-                    }
-                    if (Directory.Exists(steamloc + "\\common"))
-                    {
-                        if (Directory.Exists(steamloc + "\\common\\PUBG"))
+                        Console.WriteLine(fbd.SelectedPath);
+                        if (fbd.SelectedPath == string.Empty)
                         {
-                            if (Directory.Exists(steamloc + "\\common\\PUBG\\TslGame\\Content\\Paks"))
+                            MessageBox.Show("Steam wasen't selected!", "Error!");
+                            Application.Exit();
+                        }
+                        if (Directory.Exists(fbd.SelectedPath + "\\common"))
+                        {
+                            if (Directory.Exists(fbd.SelectedPath + "\\common\\PUBG"))
                             {
-                                pubgmaploc = steamloc + "\\common\\PUBG\\TslGame\\Content\\Paks";
-                                Console.WriteLine(pubgmaploc);
+                                if (Directory.Exists(fbd.SelectedPath + "\\common\\PUBG\\TslGame\\Content\\Paks"))
+                                {
+                                    pubgmaploc = steamloc + "\\common\\PUBG\\TslGame\\Content\\Paks";
+                                    steamloc = fbd.SelectedPath;
+                                    Properties.Settings.Default.steam_location = steamloc;
+                                    Properties.Settings.Default.pubg_map_location = steamloc + pubgmaploc;
+                                    Properties.Settings.Default.Save();
+                                }
+                            }
+                            else
+                            {
+                                MessageBox.Show("PUBG not installed!", "Error!");
+                                Application.Exit();
                             }
                         }
                         else
                         {
-                            MessageBox.Show("PUBG not installed!", "Error!");
+                            MessageBox.Show("Steam Corrupt!", "Error!");
                             Application.Exit();
                         }
                     }
                     else
                     {
-                        MessageBox.Show("Steam Corrupt!", "Error!");
                         Application.Exit();
                     }
                 }
-                else
-                {
-                    Application.Exit();
-                }
             }
-            
+            steamloc = Properties.Settings.Default.steam_location;
+            pubgmaploc = Properties.Settings.Default.pubg_map_location;
+            Console.WriteLine(steamloc);
+            Console.WriteLine(pubgmaploc);
         }
         private void CheckChange()
         {

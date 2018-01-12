@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27130.2010
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PUBG-MapChooser", "PUBG-MapChooser\PUBG-MapChooser.csproj", "{BD071F31-F882-4276-A13E-08C3303B8D9C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PUBG-Map-Chooser", "PUBG-MapChooser\PUBG-Map-Chooser.csproj", "{BD071F31-F882-4276-A13E-08C3303B8D9C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
