@@ -32,7 +32,7 @@
             this.setMaps = new System.Windows.Forms.Button();
             this.erangelMapCheck = new System.Windows.Forms.CheckBox();
             this.miramarMapCheck = new System.Windows.Forms.CheckBox();
-            this.richTextBox1 = new System.Windows.Forms.RichTextBox();
+            this.aboutBox = new System.Windows.Forms.RichTextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.resetSettings = new System.Windows.Forms.Button();
             this.SuspendLayout();
@@ -52,7 +52,7 @@
             this.erangelMapCheck.AutoSize = true;
             this.erangelMapCheck.Checked = true;
             this.erangelMapCheck.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.erangelMapCheck.Location = new System.Drawing.Point(12, 254);
+            this.erangelMapCheck.Location = new System.Drawing.Point(12, 251);
             this.erangelMapCheck.Name = "erangelMapCheck";
             this.erangelMapCheck.Size = new System.Drawing.Size(62, 17);
             this.erangelMapCheck.TabIndex = 1;
@@ -64,7 +64,7 @@
             this.miramarMapCheck.AutoSize = true;
             this.miramarMapCheck.Checked = true;
             this.miramarMapCheck.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.miramarMapCheck.Location = new System.Drawing.Point(327, 254);
+            this.miramarMapCheck.Location = new System.Drawing.Point(326, 251);
             this.miramarMapCheck.Name = "miramarMapCheck";
             this.miramarMapCheck.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
             this.miramarMapCheck.Size = new System.Drawing.Size(63, 17);
@@ -72,13 +72,13 @@
             this.miramarMapCheck.Text = "Miramar";
             this.miramarMapCheck.UseVisualStyleBackColor = true;
             // 
-            // richTextBox1
+            // aboutBox
             // 
-            this.richTextBox1.Location = new System.Drawing.Point(12, 12);
-            this.richTextBox1.Name = "richTextBox1";
-            this.richTextBox1.Size = new System.Drawing.Size(378, 208);
-            this.richTextBox1.TabIndex = 3;
-            this.richTextBox1.Text = resources.GetString("richTextBox1.Text");
+            this.aboutBox.Location = new System.Drawing.Point(12, 12);
+            this.aboutBox.Name = "aboutBox";
+            this.aboutBox.Size = new System.Drawing.Size(378, 208);
+            this.aboutBox.TabIndex = 3;
+            this.aboutBox.Text = resources.GetString("aboutBox.Text");
             // 
             // label1
             // 
@@ -91,11 +91,11 @@
             // 
             // resetSettings
             // 
-            this.resetSettings.Location = new System.Drawing.Point(81, 247);
+            this.resetSettings.Location = new System.Drawing.Point(80, 247);
             this.resetSettings.Name = "resetSettings";
-            this.resetSettings.Size = new System.Drawing.Size(240, 23);
+            this.resetSettings.Size = new System.Drawing.Size(241, 23);
             this.resetSettings.TabIndex = 5;
-            this.resetSettings.Text = "Reset Steam Location";
+            this.resetSettings.Text = "Clear Saved Steam Location";
             this.resetSettings.UseVisualStyleBackColor = true;
             this.resetSettings.Click += new System.EventHandler(this.resetSettings_Click);
             // 
@@ -106,7 +106,7 @@
             this.ClientSize = new System.Drawing.Size(402, 308);
             this.Controls.Add(this.resetSettings);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.richTextBox1);
+            this.Controls.Add(this.aboutBox);
             this.Controls.Add(this.miramarMapCheck);
             this.Controls.Add(this.erangelMapCheck);
             this.Controls.Add(this.setMaps);
@@ -125,7 +125,7 @@
         private System.Windows.Forms.Button setMaps;
         private System.Windows.Forms.CheckBox erangelMapCheck;
         private System.Windows.Forms.CheckBox miramarMapCheck;
-        private System.Windows.Forms.RichTextBox richTextBox1;
+        private System.Windows.Forms.RichTextBox aboutBox;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button resetSettings;
     }

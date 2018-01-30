@@ -117,8 +117,10 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="richTextBox1.Text" xml:space="preserve">
-    <value>This app allows you to choose which maps you want to play on PUBG.
+  <data name="aboutBox.Text" xml:space="preserve">
+    <value>NOTE: Using this in squads/duos will prevent you from joining with them if they connect to a server with a map you have disabled
+
+This app allows you to choose which maps you want to play on PUBG.
 
 This does not:
 -Delete any files
@@ -126,6 +128,6 @@ This does not:
 -Break any rules posted on (https://www.playbattlegrounds.com/rulesOfConduct.pu)
 
 This:
--Changes map filenames so PUBG can't find then causing PUBG to avoid the servers using the map (If you connect to one, you'll get dumped to the main menu)</value>
+-Changes map filenames so PUBG can't find them, causing PUBG to avoid the servers using the map (If you connect to one, you'll get kicked the main menu)</value>
   </data>
 </root>
