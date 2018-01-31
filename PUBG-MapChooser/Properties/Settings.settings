@@ -2,10 +2,10 @@
 <SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="PUBG_MapChooser.Properties" GeneratedClassName="Settings">
   <Profiles />
   <Settings>
-    <Setting Name="steam_location" Type="System.String" Scope="User">
+    <Setting Name="pubg_map_location" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
-    <Setting Name="pubg_map_location" Type="System.String" Scope="User">
+    <Setting Name="pubg_location" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
   </Settings>

@@ -26,24 +26,24 @@ namespace PUBG_MapChooser.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string steam_location {
-            get {
-                return ((string)(this["steam_location"]));
-            }
-            set {
-                this["steam_location"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
         public string pubg_map_location {
             get {
                 return ((string)(this["pubg_map_location"]));
             }
             set {
                 this["pubg_map_location"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string pubg_location {
+            get {
+                return ((string)(this["pubg_location"]));
+            }
+            set {
+                this["pubg_location"] = value;
             }
         }
     }

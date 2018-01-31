@@ -95,7 +95,7 @@
             this.resetSettings.Name = "resetSettings";
             this.resetSettings.Size = new System.Drawing.Size(241, 23);
             this.resetSettings.TabIndex = 5;
-            this.resetSettings.Text = "Clear Saved Steam Location";
+            this.resetSettings.Text = "Clear Saved PUBG Location";
             this.resetSettings.UseVisualStyleBackColor = true;
             this.resetSettings.Click += new System.EventHandler(this.resetSettings_Click);
             // 

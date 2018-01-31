@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Win32;
+using System;
 using System.Diagnostics;
 using System.IO;
 using System.Windows.Forms;
@@ -11,27 +12,23 @@ namespace PUBG_MapChooser
         {
             InitializeComponent();
         }
-        public string steamloc = "";
         public string pubgmaploc = "";
         public string[] pubgmaplist = { };
 
         private void Main_Load(object sender, EventArgs e)
         {
-            foreach (var process in Process.GetProcesses())
+            foreach (var process in Process.GetProcesses())//For each process in the process list...
             {
-                if (process.ProcessName == "TslGame")
+                if (process.ProcessName == "TslGame")//..is the process called TslGame? (Pubg)
                 {
                     MessageBox.Show("PUBG is running!" + Environment.NewLine + "PUBG does not allow file renames while running." + Environment.NewLine + "Please click ok, close PUBG, and reopen this application", "Critical Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     Environment.Exit(0);
                 }
             }
-            if (Properties.Settings.Default.steam_location == "" || Properties.Settings.Default.pubg_map_location == "")
-            {
-                steamappsSelect();
-            }
+            PUBG_Locations();
+
             pubgmaploc = Properties.Settings.Default.pubg_map_location;
             map_check_UI_update();
-
         }
         private void map_check_UI_update()
         {
@@ -62,73 +59,73 @@ namespace PUBG_MapChooser
                 }
             }
         }
-        private void steamappsSelect()
+
+        private void PUBG_Locations()
         {
-              MessageBox.Show("Please select the \"steamapps\" folder in the next window", "Select \"steamapps\"", MessageBoxButtons.OK, MessageBoxIcon.Information);
-              while (true)
-              {
-                  Properties.Settings.Default.steam_location = folderSelect();
-                  if (Properties.Settings.Default.steam_location.Contains("steamapps"))
-                  {
-                    if (Directory.Exists(Properties.Settings.Default.steam_location + "\\common"))
+            if (Properties.Settings.Default.pubg_map_location == "" || !Properties.Settings.Default.pubg_map_location.Contains("PUBG"))
+            {
+                try
+                {
+                    using (RegistryKey regkey = Registry.LocalMachine.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\Steam App 578080"))
                     {
-                        if (Directory.Exists(Properties.Settings.Default.steam_location + "\\common\\PUBG"))
+                        if (regkey != null)
                         {
-                            if (Directory.Exists(Properties.Settings.Default.steam_location + "\\common\\PUBG\\TslGame\\Content\\Paks"))
+                            string pubgregloc = (string)regkey.GetValue("InstallLocation");
+                            if (pubgregloc != null && pubgregloc.Contains("PUBG"))
                             {
-                                steamloc = Properties.Settings.Default.steam_location;
-                                pubgmaploc = steamloc + "\\common\\PUBG\\TslGame\\Content\\Paks";
-                                Properties.Settings.Default.pubg_map_location = pubgmaploc;
+                                Console.WriteLine("PUBG location from registry: " + pubgregloc);
+                                Console.WriteLine("Saving location to Properties...");
+                                Properties.Settings.Default.pubg_location = pubgregloc;
+                                Properties.Settings.Default.pubg_map_location = Properties.Settings.Default.pubg_location + "\\TslGame\\Content\\Paks";
                                 Properties.Settings.Default.Save();
-                                break;
+                                Console.WriteLine("Saved location to Properties!");
+                                pubgmaploc = Properties.Settings.Default.pubg_map_location;
                             }
-                            else
+                            if (pubgregloc == null)
                             {
-                                MessageBox.Show("We couldn't find the map files in PUBG!" + Environment.NewLine + "Please verify PUBG in Steam by Right-clicking on PUBG, clicking Properties, clicking the Local Files tab, and then clicking Verify Integrity of Game Files... ", "Critical Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                                Environment.Exit(0);
+                                pubgSelect();
                             }
+                        }
+                        if (regkey == null)
+                        {
+                            pubgSelect();
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    pubgSelect();
+                }
+            }
+        }
+
+        private void pubgSelect()
+        {
+            MessageBox.Show("PUBG location could not be found in the registry!"+Environment.NewLine+"Please select the \"PUBG\" folder in the next window", "Select \"PUBG\"", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            while (true)
+            {
+                using (var fbd = new FolderBrowserDialog())
+                {
+                    fbd.Description = @"Select your Steamapps Install folder (usually it's C:\Program Files\Steam\steamapps)";
+                    DialogResult result = fbd.ShowDialog();
+                    if (result == DialogResult.OK)
+                    {
+                        Console.WriteLine("\""+fbd.SelectedPath + "\" was selected!");
+                        if (Directory.Exists(fbd.SelectedPath + "\\common\\PUBG\\TslGame\\Content\\Paks"))
+                        {
+                            Properties.Settings.Default.pubg_location = fbd.SelectedPath;
+                            pubgmaploc = Properties.Settings.Default.pubg_location + "\\TslGame\\Content\\Paks";
+                            Properties.Settings.Default.pubg_map_location = pubgmaploc;
+                            Properties.Settings.Default.Save();
+                            break;
                         }
                         else
                         {
-                            DialogResult result = MessageBox.Show("We couldn't find PUBG in steamapps!" + Environment.NewLine + "Please select the \"steamapps\" folder containing PUBG in the next window", "Select \"steamapps\"", MessageBoxButtons.OKCancel, MessageBoxIcon.Exclamation);
-                            if (result == DialogResult.Cancel)
-                            {
-                                Environment.Exit(0);
-                            }
-                        }
-                    }
-                    else
-                    {
-                        DialogResult result = MessageBox.Show("We couldn't find the \"common\" folder in steamapps!" + Environment.NewLine + "Please select the \"steamapps\" folder in the next window", "Select \"steamapps\"", MessageBoxButtons.OKCancel, MessageBoxIcon.Exclamation);
-                        if (result == DialogResult.Cancel)
-                        {
+                            MessageBox.Show("We couldn't find the map files in PUBG!" + Environment.NewLine + "Please verify PUBG in Steam by Right-clicking on PUBG, clicking Properties, clicking the Local Files tab, and then clicking Verify Integrity of Game Files... ", "Critical Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                             Environment.Exit(0);
                         }
                     }
-                  }
-                  else
-                  {
-                     DialogResult result = MessageBox.Show("Steamapps wasn't selected!" + Environment.NewLine + "Please select the \"steamapps\" folder in the next window", "Select \"steamapps\"", MessageBoxButtons.OKCancel, MessageBoxIcon.Exclamation);
-                     if (result == DialogResult.Cancel)
-                     {
-                         Environment.Exit(0);
-                     }
-                  }
-              }
-        }
-
-        private string folderSelect()
-        {
-            using (var fbd = new FolderBrowserDialog())
-            {
-                fbd.Description = @"Select your Steamapps Install folder (usually it's C:\Program Files\Steam\steamapps)";
-                DialogResult result = fbd.ShowDialog();
-                if (result == DialogResult.OK)
-                {
-                    Console.WriteLine(fbd.SelectedPath);
-                    return fbd.SelectedPath;
                 }
-                return "";
             }
         }
         private void togglemap_erangel(bool toggle)
@@ -228,14 +225,14 @@ namespace PUBG_MapChooser
         }
         private void resetSettings_Click(object sender, EventArgs e)
         {
-            DialogResult settingsreset =  MessageBox.Show("This will reset the saved Steam location!" + Environment.NewLine + "Are you sure you want to continue?", "Caution!", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation);
+            DialogResult settingsreset =  MessageBox.Show("This will reset the saved PUBG location!" + Environment.NewLine + "Are you sure you want to continue?", "Caution!", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation);
             if (settingsreset == DialogResult.Yes)
             {
-                 Properties.Settings.Default.steam_location = "";
+                 Properties.Settings.Default.pubg_location = "";
                  Properties.Settings.Default.pubg_map_location = "";
                  Properties.Settings.Default.Save();
-                 MessageBox.Show("Saved Steam location cleared!", "Settings cleared!", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                 steamappsSelect();
+                 MessageBox.Show("Saved PUBG location cleared!", "Settings cleared!", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                PUBG_Locations();
             }
             map_check_UI_update();
         }
