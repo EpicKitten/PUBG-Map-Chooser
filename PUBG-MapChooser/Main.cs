@@ -12,7 +12,6 @@ namespace PUBG_MapChooser
         {
             InitializeComponent();
         }
-        public string pubgmaploc = "";
         public string[] pubgmaplist = { };
 
         private void Main_Load(object sender, EventArgs e)
@@ -25,14 +24,53 @@ namespace PUBG_MapChooser
                     Environment.Exit(0);
                 }
             }
-            PUBG_Locations();
-
-            pubgmaploc = Properties.Settings.Default.pubg_map_location;
+            forceCheck();
             map_check_UI_update();
+        }
+        private void forceCheck()
+        {
+            try
+            {
+                using (RegistryKey regkey = Registry.LocalMachine.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\Steam App 578080"))
+                {
+                    if (regkey != null)
+                    {
+                        string pubgregloc = (string)regkey.GetValue("InstallLocation");
+                        if (pubgregloc != null && pubgregloc.Contains("PUBG"))
+                        {
+                            Console.WriteLine("PUBG location from registry: " + pubgregloc);
+                            Console.WriteLine("Saving location to Properties...");
+                            Properties.Settings.Default.pubg_location = pubgregloc;
+                            Properties.Settings.Default.pubg_map_location = Properties.Settings.Default.pubg_location + "\\TslGame\\Content\\Paks";
+                            Properties.Settings.Default.Save();
+                            Console.WriteLine("Saved location to Properties!");
+                        }
+                        if (pubgregloc == null)
+                        {
+                            pubgSelect();
+                        }
+                    }
+                    if (regkey == null)
+                    {
+                        pubgSelect();
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                pubgSelect();
+            }
         }
         private void map_check_UI_update()
         {
-            pubgmaplist = Directory.GetFiles(pubgmaploc);
+            try
+            {
+                pubgmaplist = Directory.GetFiles(Properties.Settings.Default.pubg_map_location);
+            }
+            catch (DirectoryNotFoundException)
+            {
+                forceCheck();
+            }
             foreach (string file in pubgmaplist)
             {
                 if (file.Contains("TslGame-WindowsNoEditor_erangel"))
@@ -60,45 +98,6 @@ namespace PUBG_MapChooser
             }
         }
 
-        private void PUBG_Locations()
-        {
-            if (Properties.Settings.Default.pubg_map_location == "" || !Properties.Settings.Default.pubg_map_location.Contains("PUBG"))
-            {
-                try
-                {
-                    using (RegistryKey regkey = Registry.LocalMachine.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\Steam App 578080"))
-                    {
-                        if (regkey != null)
-                        {
-                            string pubgregloc = (string)regkey.GetValue("InstallLocation");
-                            if (pubgregloc != null && pubgregloc.Contains("PUBG"))
-                            {
-                                Console.WriteLine("PUBG location from registry: " + pubgregloc);
-                                Console.WriteLine("Saving location to Properties...");
-                                Properties.Settings.Default.pubg_location = pubgregloc;
-                                Properties.Settings.Default.pubg_map_location = Properties.Settings.Default.pubg_location + "\\TslGame\\Content\\Paks";
-                                Properties.Settings.Default.Save();
-                                Console.WriteLine("Saved location to Properties!");
-                                pubgmaploc = Properties.Settings.Default.pubg_map_location;
-                            }
-                            if (pubgregloc == null)
-                            {
-                                pubgSelect();
-                            }
-                        }
-                        if (regkey == null)
-                        {
-                            pubgSelect();
-                        }
-                    }
-                }
-                catch (Exception ex)
-                {
-                    pubgSelect();
-                }
-            }
-        }
-
         private void pubgSelect()
         {
             MessageBox.Show("PUBG location could not be found in the registry!"+Environment.NewLine+"Please select the \"PUBG\" folder in the next window", "Select \"PUBG\"", MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -114,8 +113,7 @@ namespace PUBG_MapChooser
                         if (Directory.Exists(fbd.SelectedPath + "\\common\\PUBG\\TslGame\\Content\\Paks"))
                         {
                             Properties.Settings.Default.pubg_location = fbd.SelectedPath;
-                            pubgmaploc = Properties.Settings.Default.pubg_location + "\\TslGame\\Content\\Paks";
-                            Properties.Settings.Default.pubg_map_location = pubgmaploc;
+                            Properties.Settings.Default.pubg_map_location = Properties.Settings.Default.pubg_location + "\\TslGame\\Content\\Paks";
                             Properties.Settings.Default.Save();
                             break;
                         }
@@ -130,7 +128,14 @@ namespace PUBG_MapChooser
         }
         private void togglemap_erangel(bool toggle)
         {
-            pubgmaplist = Directory.GetFiles(pubgmaploc);
+            try
+            {
+                pubgmaplist = Directory.GetFiles(Properties.Settings.Default.pubg_map_location);
+            }
+            catch (DirectoryNotFoundException)
+            {
+                forceCheck();
+            }
             if (toggle)
             {
                 Console.WriteLine("Enabling Erangel...");
@@ -166,7 +171,14 @@ namespace PUBG_MapChooser
         }
         private void togglemap_miramar(bool toggle)
         {
-            pubgmaplist = Directory.GetFiles(pubgmaploc);
+            try
+            {
+                pubgmaplist = Directory.GetFiles(Properties.Settings.Default.pubg_map_location);
+            }
+            catch (DirectoryNotFoundException)
+            {
+                forceCheck();
+            }
             if (toggle)
             {
                 Console.WriteLine("Enabling Miramar...");
@@ -202,8 +214,14 @@ namespace PUBG_MapChooser
         }
         private void setMaps_Click(object sender, EventArgs e)
         {
-            Console.WriteLine(pubgmaploc);
-            pubgmaplist = Directory.GetFiles(pubgmaploc);
+            try
+            {
+                pubgmaplist = Directory.GetFiles(Properties.Settings.Default.pubg_map_location);
+            }
+            catch (DirectoryNotFoundException)
+            {
+                forceCheck();
+            };
             Console.WriteLine("--------- Current List -----------");
             foreach (var item in pubgmaplist)
             {
@@ -228,11 +246,11 @@ namespace PUBG_MapChooser
             DialogResult settingsreset =  MessageBox.Show("This will reset the saved PUBG location!" + Environment.NewLine + "Are you sure you want to continue?", "Caution!", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation);
             if (settingsreset == DialogResult.Yes)
             {
-                 Properties.Settings.Default.pubg_location = "";
-                 Properties.Settings.Default.pubg_map_location = "";
-                 Properties.Settings.Default.Save();
-                 MessageBox.Show("Saved PUBG location cleared!", "Settings cleared!", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                PUBG_Locations();
+                Properties.Settings.Default.pubg_location = "";
+                Properties.Settings.Default.pubg_map_location = "";
+                Properties.Settings.Default.Save();
+                MessageBox.Show("Saved PUBG location cleared!", "Settings cleared!", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                forceCheck();
             }
             map_check_UI_update();
         }
