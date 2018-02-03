@@ -1,4 +1,4 @@
-﻿using Microsoft.Win32;
+using Microsoft.Win32;
 using System;
 using System.Diagnostics;
 using System.IO;
@@ -147,7 +147,15 @@ namespace PUBG_MapChooser
                         {
                             string oldname = file;
                             string newname = file.Replace(".pak.disabled", ".pak");//enables the files
-                            File.Move(oldname, newname);
+                            try
+                            {
+                                if (File.Exists(newname)) { File.Delete(newname); }
+                                File.Move(oldname, newname);
+                            }
+                            catch (Exception e)
+                            {
+                                MessageBox.Show("An error occurred while enabling Erangel. Error: " + e);
+                            }
                         }
                     }
                 }
@@ -163,7 +171,15 @@ namespace PUBG_MapChooser
                         {
                             string oldname = file;
                             string newname = file.Replace(".pak", ".pak.disabled");//disables the files
-                            File.Move(oldname, newname);
+                            try
+                            {
+                                if (File.Exists(newname)) { File.Delete(newname); }
+                                File.Move(oldname, newname);
+                            }
+                            catch (Exception e)
+                            {
+                                MessageBox.Show("An error occurred while disabling Erangel. Error: " + e);
+                            }
                         }
                     }
                 }
@@ -190,7 +206,15 @@ namespace PUBG_MapChooser
                         {
                             string oldname = file;
                             string newname = file.Replace(".pak.disabled", ".pak");//enables the files
-                            File.Move(oldname, newname);
+                            try
+                            {
+                                if (File.Exists(newname)) { File.Delete(newname); }
+                                File.Move(oldname, newname);
+                            }
+                            catch (Exception e)
+                            {
+                                MessageBox.Show("An error occurred while enabling Miramar. Error: "+e);
+                            }
                         }
                     }
                 }
@@ -206,7 +230,15 @@ namespace PUBG_MapChooser
                         {
                             string oldname = file;
                             string newname = file.Replace(".pak", ".pak.disabled");//disables the files
-                            File.Move(oldname, newname);
+                            try
+                            {
+                                if (File.Exists(newname)) { File.Delete(newname);}
+                                File.Move(oldname, newname);
+                            }
+                            catch (Exception e)
+                            {
+                                MessageBox.Show("An error occurred while disabling Miramar. Error: "+e);
+                            }
                         }
                     }
                 }
