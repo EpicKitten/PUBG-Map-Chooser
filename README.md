@@ -1,3 +1,5 @@
+[Outdated]
+This method no longer works. If someone impliments a method using symlinks, then I will push it into the main repository. Otherwise I will no longer be focusing on [this](https://github.com/EpicKitten/PUBG-Replay-Manager) project
 # PUBG-Map-Chooser
 Allows you to disable and enable map files for PUBG
 
