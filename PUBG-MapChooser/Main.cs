@@ -123,6 +123,10 @@ namespace PUBG_MapChooser
                             Environment.Exit(0);
                         }
                     }
+                    else
+                    {
+                        Environment.Exit(0);
+                    }
                 }
             }
         }
