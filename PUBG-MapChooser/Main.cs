@@ -113,7 +113,7 @@ namespace PUBG_MapChooser
                         if (Directory.Exists(fbd.SelectedPath + "\\common\\PUBG\\TslGame\\Content\\Paks"))
                         {
                             Properties.Settings.Default.pubg_location = fbd.SelectedPath;
-                            Properties.Settings.Default.pubg_map_location = Properties.Settings.Default.pubg_location + "\\TslGame\\Content\\Paks";
+                            Properties.Settings.Default.pubg_map_location = Properties.Settings.Default.pubg_location + "\\common\\PUBG\\TslGame\\Content\\Paks";
                             Properties.Settings.Default.Save();
                             break;
                         }
