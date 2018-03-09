@@ -113,7 +113,7 @@ namespace PUBG_MapChooser
                         if (Directory.Exists(fbd.SelectedPath + "\\common\\PUBG\\TslGame\\Content\\Paks"))
                         {
                             Properties.Settings.Default.pubg_location = fbd.SelectedPath;
-                            Properties.Settings.Default.pubg_map_location = Properties.Settings.Default.pubg_location + "\\TslGame\\Content\\Paks";
+                            Properties.Settings.Default.pubg_map_location = Properties.Settings.Default.pubg_location + "\\common\\PUBG\\TslGame\\Content\\Paks";
                             Properties.Settings.Default.Save();
                             break;
                         }
@@ -122,6 +122,10 @@ namespace PUBG_MapChooser
                             MessageBox.Show("We couldn't find the map files in PUBG!" + Environment.NewLine + "Please verify PUBG in Steam by Right-clicking on PUBG, clicking Properties, clicking the Local Files tab, and then clicking Verify Integrity of Game Files... ", "Critical Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                             Environment.Exit(0);
                         }
+                    }
+                    else
+                    {
+                        Environment.Exit(0);
                     }
                 }
             }
